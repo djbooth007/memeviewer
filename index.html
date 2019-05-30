@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>Simple Meme Viewer</title>
+<link rel="shortcut icon" href="https://raw.githubusercontent.com/mikeinspace/memerator/master/public/favicon.ico"/>
+<style>
+body {  margin: 0;  font-family: "Ubuntu", "Helvetica Neue";  background:#282c34;  font-size:100%; }
+.perfect_center { position:absolute; transform: translate(-50%,-50%); top:50%; left:50%; text-align:center; }
+.description{ margin-top:20px; color:white; font-weight:400; font-size:150%;  }
+</style>
+
+<script>
+window.onload=function(){
+	var assetId = window.location.search.substr(1).replace("id=","");
+	var source = 'https://xchain.io/api/asset/'+assetId;		
+	var xhr = new XMLHttpRequest();	
+	xhr.onload = function() { loadAsset( this.response ); }
+	xhr.open( 'GET', source );
+	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+	xhr.responseType = 'json';
+	xhr.send();
+}
+	
+function loadAsset( json ){
+	var d = json.description.split(";");
+	var image = d[0].replace('imgur', 'https://i.imgur.com');
+	var description = d[1];
+	
+	document.getElementById('meme_image').innerHTML = '<img src="'+image+'">';
+	document.getElementById('meme_description').innerHTML = description;
+}
+</script>
+
+</head>
+<body>
+
+	<div class="perfect_center">
+		<div id="meme_image"></div>
+		<div class="description" id="meme_description"></div>
+	</div>
+
+</body>
+</html>
