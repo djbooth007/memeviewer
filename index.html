@@ -1,6 +1,5 @@
 <html>
 <head>
-<title>Simple Meme Viewer</title>
 <link rel="shortcut icon" href="https://raw.githubusercontent.com/mikeinspace/memerator/master/public/favicon.ico"/>
 <style>
 body {  margin: 0;  font-family: "Ubuntu", "Helvetica Neue";  background:#282c34;  font-size:100%; }
@@ -10,10 +9,16 @@ body {  margin: 0;  font-family: "Ubuntu", "Helvetica Neue";  background:#282c34
 
 <script>
 window.onload=function(){
+	// Try find Asset ID from query string, ie index.html?id=something
 	var assetId = window.location.search.substr(1).replace("id=","");
+	
+	// Or try find Asset ID from pathname, ie domain.com/something/
+	if(assetId == ""){ var pathname = window.location.pathname.split("/"); var assetId = pathname[pathname.length-2]; }
+	
+	// Call Asset API
 	var source = 'https://xchain.io/api/asset/'+assetId;		
 	var xhr = new XMLHttpRequest();	
-	xhr.onload = function() { loadAsset( this.response ); }
+	xhr.onload = function() { loadAsset( this.response ); } // Once response is ready, call loadAsset function.
 	xhr.open( 'GET', source );
 	xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 	xhr.responseType = 'json';
@@ -25,6 +30,7 @@ function loadAsset( json ){
 	var image = d[0].replace('imgur', 'https://i.imgur.com');
 	var description = d[1];
 	
+	// Insert results into the document.
 	document.getElementById('meme_image').innerHTML = '<img src="'+image+'">';
 	document.getElementById('meme_description').innerHTML = description;
 }
