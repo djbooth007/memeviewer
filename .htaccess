@@ -1,0 +1,11 @@
+Options +FollowSymLinks -MultiViews
+
+DirectoryIndex index.html
+
+RewriteEngine On
+RewriteBase /
+
+RewriteCond %{SCRIPT_FILENAME} !-d
+RewriteCond %{SCRIPT_FILENAME} !-f
+RewriteRule [^/]$ %{REQUEST_URI}/ [L,R]
+RewriteRule ^(.*)/$ ./index.html?id=$1 [NC,L]
